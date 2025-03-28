@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useClickStore } from '@/stores/useClickStore';
 import { ArrowBigUp } from 'lucide-vue-next'
-import { ref, watch } from 'vue'
+import { onMounted, ref} from 'vue'
 
 const loremText = ref<string>('');
 const wordsNum = ref<number>(0);
@@ -66,8 +66,16 @@ const handleKeyDown = (e: KeyboardEvent) => {
   }
 }
 
-watch(() => clickStore.clickNumber, (newValue) => {
-  localStorage.setItem('clickNumber', newValue.toString());
+const validateNumber = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  let value = Number(target.value.replace(/\D/g, ''));
+  if (value < 0) value = 0;
+  if (value > 100) value = 100;
+  wordsNum.value = value;
+};
+
+onMounted(() => {
+  clickStore.loadClickNumber();
 });
 
 </script>
@@ -90,8 +98,8 @@ watch(() => clickStore.clickNumber, (newValue) => {
         placeholder="Nb"
         min="0"
         max="100"
-        value="0"
         v-model="wordsNum"
+        @input="validateNumber"
       />
       <button
         @click="generateLorem"
@@ -104,6 +112,7 @@ watch(() => clickStore.clickNumber, (newValue) => {
     <div class="relative w-full max-w-2xl shadow-2xl h-40 p-4 mt-5 border-2 text-gray-400 border-gray-200 focus:outline-none focus:ring-2 focus:ring-secondary transition-all duration-300">
       <textarea
         class="w-full resize-none border-none outline-none h-full focus:ring-0"
+        :class="{ 'rochester-regular text-lg': loremText }"
         placeholder="Votre texte généré ici..."
         readonly
         :value="loremText"
