@@ -5,7 +5,7 @@ import { doc, getDoc, updateDoc, increment } from "firebase/firestore";
 
 export const useClickStore = defineStore("clickStore", () => {
   const clickNumber = ref<number>(0);
-  const clickDocRef = doc(firestore, "copies", "prswN1juFN0yZTfwVB26");
+  const clickDocRef = doc(firestore,import.meta.env.VITE_FIREBASE_IDENTIFIANT1 , import.meta.env.VITE_FIREBASE_IDENTIFIANT2);
 
   const loadClickNumber = async () => {
     try {
@@ -13,7 +13,7 @@ export const useClickStore = defineStore("clickStore", () => {
       if (docSnapshot.exists()) {
         clickNumber.value = docSnapshot.data()?.nbcopies || 0;
       } else {
-        console.log("Aucune donnée trouvée pour 'nbcopies'.");
+        console.log("Aucune donnée trouvée.");
       }
     } catch (error) {
       console.error("Erreur lors du chargement du compteur :", error);
@@ -25,7 +25,7 @@ export const useClickStore = defineStore("clickStore", () => {
       await updateDoc(clickDocRef, {
         nbcopies: increment(1),
       });
-      clickNumber.value++; 
+      clickNumber.value++;
     } catch (error) {
       console.error("Erreur lors de l'incrémentation du compteur :", error);
     }
