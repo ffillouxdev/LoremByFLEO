@@ -1,5 +1,14 @@
 # lorembyfleo
 
+Projet qui permet de générer des phrases lorem ipsus.
+
+<p align="center">
+  <img src="public/logos/fleo-logo.svg" alt="Aperçu de l'application" width="600"/>
+</p>
+
+
+
+
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
